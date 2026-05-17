@@ -13,15 +13,15 @@ import PlaylistsView from "./components/PlaylistsView";
 import SettingsView from "./components/SettingsView";
 import axios from 'axios';
 
-import { Menu, X } from 'lucide-react';
+import { Settings, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import MobileNav from './components/MobileNav';
 
 function AppContent() {
   const [emotion, setEmotion] = useState("");
   const [songs, setSongs] = useState([]);
   const [allSongs, setAllSongs] = useState([]); // Global cache
   const [activeSection, setActiveSection] = useState("now-playing");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const { currentSong, isPlaying } = usePlayer();
 
@@ -70,37 +70,21 @@ function AppContent() {
     fetchAllSongs();
   }, []);
 
-  // Sidebar close on navigation (mobile)
+  // Sidebar close on navigation (mobile) - handled by MobileNav now
   const navigateTo = (section) => {
     setActiveSection(section);
-    setIsSidebarOpen(false);
   };
 
   return (
     <div className="flex bg-dark-bg min-h-screen text-white font-sans selection:bg-brand-500/30">
       
-      {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      {/* Desktop Sidebar (Fixed) & Mobile Sidebar (Drawer) */}
-      <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:block w-64 flex-shrink-0 z-50 transition-transform duration-300 ease-in-out`}>
+      {/* Desktop Sidebar (Fixed) */}
+      <div className="hidden lg:block w-64 flex-shrink-0 z-50">
         <Sidebar activeSection={activeSection} setActiveSection={navigateTo} />
-        {/* Mobile Close Button */}
-        <button 
-          onClick={() => setIsSidebarOpen(false)}
-          className="absolute top-4 right-4 p-2 text-white/40 hover:text-white lg:hidden"
-        >
-          <X size={24} />
-        </button>
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col h-screen overflow-y-auto pb-36">
+      <main className="flex-1 flex flex-col h-screen overflow-y-auto pb-40 lg:pb-36">
         
         {/* Top Header / Background Gradient */}
         <motion.div 
@@ -124,21 +108,38 @@ function AppContent() {
               <span className="text-[9px] font-light tracking-[0.25em] text-white/40 mt-1 uppercase">by RCV</span>
             </div>
             <button 
-              onClick={() => setIsSidebarOpen(true)}
-              className="p-2 bg-white/5 rounded-xl border border-white/10 text-white/80 hover:text-white transition-all"
+              onClick={() => setActiveSection('settings')}
+              className="p-2 bg-white/5 rounded-xl border border-white/10 text-white/80 hover:text-white transition-colors duration-500"
             >
-              <Menu size={24} />
+              <Settings size={22} />
             </button>
           </header>
 
           {activeSection === "now-playing" ? (
             <>
+              {/* Hero Text for Mobile & Desktop (when no emotion) */}
+              {!emotion && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  className="w-full text-center lg:text-left flex flex-col items-center lg:items-start pb-4"
+                >
+                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70 mb-3">
+                    Your emotions deserve <br className="hidden md:block"/> a soundtrack.
+                  </h2>
+                  <p className="text-sm md:text-lg text-white/50 leading-relaxed font-light max-w-md">
+                    Let our AI analyze your vibe and instantly curate the perfect music for this exact moment.
+                  </p>
+                </motion.div>
+              )}
+
               {/* Top Section: Camera & Current Context */}
-              <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-stretch">
+              <section className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-6 items-stretch">
                 
                 {/* Left: Camera feature */}
                 <div className="lg:col-span-7 flex flex-col gap-4">
-                  <h2 className="section-subtitle text-[11px]">Mood Scanner</h2>
+                  <h2 className="section-subtitle text-[11px] hidden lg:block">Mood Scanner</h2>
                   <FacialExpression 
                     setSongs={setSongs} 
                     setEmotion={setEmotion} 
@@ -261,6 +262,9 @@ function AppContent() {
 
       {/* Global Player Bar */}
       <PlayerBar />
+
+      {/* Global Mobile Bottom Nav */}
+      <MobileNav activeSection={activeSection} setActiveSection={navigateTo} />
 
       {/* Global Toast */}
       <Toast />

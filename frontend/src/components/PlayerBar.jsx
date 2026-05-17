@@ -46,7 +46,7 @@ export default function PlayerBar() {
     <motion.div 
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-4 lg:bottom-6 left-4 right-4 lg:left-72 lg:right-8 glass bg-[var(--bg-card)]/70 backdrop-blur-3xl rounded-[2rem] p-3 md:p-4 flex items-center justify-between gap-4 z-[100] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+      className="fixed bottom-[calc(5rem+max(0.5rem,env(safe-area-inset-bottom)))] lg:bottom-6 left-2 right-2 sm:left-4 sm:right-4 lg:left-72 lg:right-8 glass bg-dark-card/90 backdrop-blur-3xl rounded-3xl p-3 flex items-center justify-between gap-2 sm:gap-4 z-[90] shadow-[0_10px_40px_rgba(0,0,0,0.8)] border border-white/10"
     >
         {/* Song Info */}
         <div className="flex items-center gap-4 md:gap-5 min-w-0 flex-1 md:flex-none md:w-1/4">

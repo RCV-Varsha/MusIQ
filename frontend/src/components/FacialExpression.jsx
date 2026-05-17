@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import axios from "axios";
-import { Camera, AlertTriangle, Loader2, CheckCircle } from "lucide-react";
+import { Camera, AlertTriangle, Loader2, CheckCircle, ScanFace } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FacialExpression({ setSongs, setEmotion, emotion, setActiveSection }) {
@@ -247,23 +247,34 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                   </div>
                 </>
              ) : (
-                <>
-                  <Camera className="w-12 h-12 text-white/20 mb-4" />
-                  <span className="text-sm font-medium text-white/40 uppercase tracking-widest">Camera Offline</span>
-                </>
+                <div 
+                  className="flex flex-col items-center justify-center w-full h-full cursor-pointer lg:cursor-default"
+                  onClick={() => { if(window.innerWidth < 1024) startScan(); }}
+                >
+                  <div className="absolute inset-0 bg-radial from-brand-500/20 to-transparent opacity-60 pointer-events-none" />
+                  <motion.div 
+                    animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-20 h-20 rounded-full bg-brand-500/10 flex items-center justify-center mb-4 shadow-[0_0_30px_var(--brand-glow-subtle)] border border-brand-500/20"
+                  >
+                    <ScanFace className="w-10 h-10 text-brand-400" />
+                  </motion.div>
+                  <span className="text-lg md:text-xl font-bold text-white mb-2 text-glow">Tap to Scan Mood</span>
+                  <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest hidden lg:block">Click below to start</span>
+                </div>
              )}
           </div>
         )}
       </motion.div>
 
-      {/* Action Button */}
+      {/* Action Button (Hidden on mobile where the CTA card acts as the trigger) */}
       {!scanComplete && (
         <motion.button 
           whileHover={status !== "Initializing models..." && !error && !isDetecting ? { scale: 1.02 } : {}}
           whileTap={status !== "Initializing models..." && !error && !isDetecting ? { scale: 0.98 } : {}}
           onClick={startScan}
           disabled={status === "Initializing models..." || error || isDetecting}
-          className={`w-full py-4 rounded-xl font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-3 ${
+          className={`hidden lg:flex w-full py-4 rounded-xl font-bold tracking-wider uppercase transition-colors duration-500 items-center justify-center gap-3 ${
             isDetecting 
               ? 'bg-white/5 border border-brand-500/30 text-brand-500 cursor-wait'
               : 'bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow-[0_0_20px_var(--brand-glow)] hover:shadow-[0_0_30px_var(--brand-glow)]'
