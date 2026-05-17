@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import axios from "axios";
 import { Camera, AlertTriangle, Loader2, CheckCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function FacialExpression({ setSongs, setEmotion, emotion, setActiveSection }) {
   const videoRef = useRef(null);
@@ -132,8 +133,9 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
 
   const fetchSongs = async (mood) => {
     try {
-      axios.post("http://localhost:3000/emotion", { emotion: mood }).catch(console.error);
-      const response = await axios.get(`http://localhost:3000/songs?mood=${mood}`);
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      axios.post(`${API_BASE}/emotion`, { emotion: mood }).catch(console.error);
+      const response = await axios.get(`${API_BASE}/songs?mood=${mood}`);
       if (response.data && response.data.songs) {
         setSongs(response.data.songs);
       }
@@ -156,17 +158,23 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
     <div className="flex flex-col w-full max-w-md gap-4">
       
       {/* Camera / Status Card */}
-      <div className={`relative w-full aspect-video rounded-2xl overflow-hidden glass transition-all duration-500 ${isDetecting ? 'live-glow-border' : 'border-white/10'}`}>
+      <motion.div 
+        layout
+        className={`relative w-full aspect-video rounded-3xl overflow-hidden glass transition-all duration-700 shadow-2xl ${isDetecting ? 'shadow-[0_0_40px_var(--brand-glow)] border-brand-500/50' : 'border-white/10'}`}
+      >
         
-        {/* Scanning Corners Animation */}
-        {isDetecting && (
-          <div className="absolute inset-0 pointer-events-none z-20">
-            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-brand-500 m-4 animate-scan" />
-            <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-brand-500 m-4 animate-scan" />
-            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-brand-500 m-4 animate-scan" />
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-brand-500 m-4 animate-scan" />
-          </div>
-        )}
+        {/* Scanning Glow Animation */}
+        <AnimatePresence>
+          {isDetecting && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.3, 0.7, 0.3] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 pointer-events-none z-20 border-[3px] border-brand-500/40 rounded-3xl shadow-[inset_0_0_60px_var(--brand-glow)]" 
+            />
+          )}
+        </AnimatePresence>
 
         {/* Live Indicator */}
         <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full border border-white/10">
@@ -220,18 +228,22 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                   <span className="text-xs font-medium text-white/50 uppercase tracking-widest mt-1 mb-6">AI Detected Mood</span>
                   
                   <div className="flex flex-col gap-3 w-full max-w-[200px]">
-                    <button 
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => fetchSongs(emotion)}
-                      className="w-full py-2.5 bg-gradient-to-r from-brand-600 to-brand-500 rounded-lg text-white text-sm font-bold tracking-wider uppercase hover:scale-105 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+                      className="w-full py-2.5 bg-gradient-to-r from-brand-600 to-brand-500 rounded-lg text-white text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_var(--brand-glow)]"
                     >
                       Play Recommended
-                    </button>
-                    <button 
+                    </motion.button>
+                    <motion.button 
+                      whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveSection('moods')}
-                      className="w-full py-2.5 bg-white/5 border border-white/10 rounded-lg text-white/80 text-sm font-bold tracking-wider uppercase hover:bg-white/10 hover:text-white transition-all"
+                      className="w-full py-2.5 bg-white/5 border border-white/10 rounded-lg text-white/80 text-sm font-bold tracking-wider uppercase transition-colors"
                     >
                       Choose Another
-                    </button>
+                    </motion.button>
                   </div>
                 </>
              ) : (
@@ -242,32 +254,36 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
              )}
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Action Button */}
       {!scanComplete && (
-        <button 
+        <motion.button 
+          whileHover={status !== "Initializing models..." && !error && !isDetecting ? { scale: 1.02 } : {}}
+          whileTap={status !== "Initializing models..." && !error && !isDetecting ? { scale: 0.98 } : {}}
           onClick={startScan}
           disabled={status === "Initializing models..." || error || isDetecting}
           className={`w-full py-4 rounded-xl font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-3 ${
             isDetecting 
               ? 'bg-white/5 border border-brand-500/30 text-brand-500 cursor-wait'
-              : 'bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:scale-[1.02]'
+              : 'bg-gradient-to-r from-brand-700 to-brand-500 text-white shadow-[0_0_20px_var(--brand-glow)] hover:shadow-[0_0_30px_var(--brand-glow)]'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
         >
           {!isDetecting && <Camera size={20} />}
           {isDetecting ? 'Scanning Face...' : 'Scan Mood'}
-        </button>
+        </motion.button>
       )}
       
       {scanComplete && (
-        <button 
+        <motion.button 
+          whileHover={{ scale: 1.02, color: "#fff" }}
+          whileTap={{ scale: 0.98 }}
           onClick={startScan}
-          className="w-full py-3 rounded-xl font-bold tracking-wider uppercase text-white/50 text-sm hover:text-white transition-colors flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-xl font-bold tracking-wider uppercase text-white/50 text-sm flex items-center justify-center gap-2"
         >
           <Camera size={16} />
           Rescan Face
-        </button>
+        </motion.button>
       )}
 
     </div>

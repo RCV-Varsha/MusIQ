@@ -1,6 +1,7 @@
 import React from 'react';
 import { Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Volume2, Music } from 'lucide-react';
 import { usePlayer } from '../context/PlayerContext';
+import { motion } from 'framer-motion';
 
 export default function PlayerBar() {
   const {
@@ -42,65 +43,80 @@ export default function PlayerBar() {
   const volumePct = `${volume * 100}%`;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 animate-in slide-in-from-bottom duration-500">
-      {/* Top glow line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent" />
-
-      <div className="glass bg-[var(--bg-card)]/90 backdrop-blur-2xl flex items-center px-4 md:px-6 h-20 md:h-24 justify-between gap-4">
-        
+    <motion.div 
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="fixed bottom-4 lg:bottom-6 left-4 right-4 lg:left-72 lg:right-8 glass bg-[var(--bg-card)]/70 backdrop-blur-3xl rounded-[2rem] p-3 md:p-4 flex items-center justify-between gap-4 z-[100] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+    >
         {/* Song Info */}
-        <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1 md:flex-none md:w-1/4">
-          {/* Thumbnail */}
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-brand-700 to-brand-900 flex-shrink-0 flex items-center justify-center overflow-hidden relative box-glow">
-            <Music size={16} className="text-white/60 relative z-10" />
+        <div className="flex items-center gap-4 md:gap-5 min-w-0 flex-1 md:flex-none md:w-1/4">
+          {/* Thumbnail - Record Spin Effect */}
+          <motion.div 
+            animate={{ rotate: isPlaying ? 360 : 0 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            className={`w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-brand-700 to-brand-900 flex-shrink-0 flex items-center justify-center overflow-hidden relative box-glow ${isPlaying ? 'shadow-[0_0_20px_var(--brand-glow)]' : ''}`}
+          >
+            <Music size={20} className="text-white/60 relative z-10" />
             <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-transparent" />
-          </div>
+            {/* Center Hole for record effect */}
+            <div className="absolute inset-0 m-auto w-3 h-3 md:w-4 md:h-4 bg-dark-bg/80 backdrop-blur-md rounded-full z-20" />
+          </motion.div>
           <div className="flex flex-col min-w-0">
-            <span className="text-white font-semibold truncate text-sm md:text-base leading-tight">{currentSong.title}</span>
+            <span className="text-white font-bold truncate text-sm md:text-base leading-tight drop-shadow-md">{currentSong.title}</span>
             <span className="text-white/50 text-xs truncate">{currentSong.artist}</span>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col items-center flex-1 md:max-w-xl gap-2 px-2">
-          <div className="flex items-center gap-3 md:gap-5">
-            <button 
+        <div className="flex flex-col items-center flex-1 md:max-w-2xl gap-2 md:gap-3 px-2">
+          <div className="flex items-center gap-3 md:gap-6">
+            <motion.button 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsShuffle(!isShuffle)}
-              className={`hidden sm:flex p-1.5 rounded-lg transition-all duration-200 ${isShuffle ? 'text-brand-500' : 'text-white/40 hover:text-white'}`}
+              className={`hidden sm:flex p-2 rounded-xl transition-all duration-300 ${isShuffle ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
-              <Shuffle size={17} />
-            </button>
+              <Shuffle size={18} />
+            </motion.button>
             
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.1, x: -2 }}
+              whileTap={{ scale: 0.9 }}
               onClick={playPrev} 
-              className="text-white/70 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5"
+              className="text-white/70 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/5"
             >
-              <SkipBack size={22} className="fill-current" />
-            </button>
+              <SkipBack size={24} className="fill-current" />
+            </motion.button>
             
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={togglePlay}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-white/10 flex-shrink-0"
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white text-black flex items-center justify-center transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] flex-shrink-0"
             >
               {isPlaying
-                ? <Pause size={19} className="fill-current" />
-                : <Play size={19} className="fill-current ml-0.5" />
+                ? <Pause size={22} className="fill-current" />
+                : <Play size={22} className="fill-current ml-1" />
               }
-            </button>
+            </motion.button>
             
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.1, x: 2 }}
+              whileTap={{ scale: 0.9 }}
               onClick={playNext} 
-              className="text-white/70 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5"
+              className="text-white/70 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/5"
             >
-              <SkipForward size={22} className="fill-current" />
-            </button>
+              <SkipForward size={24} className="fill-current" />
+            </motion.button>
             
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsRepeat(!isRepeat)}
-              className={`hidden sm:flex p-1.5 rounded-lg transition-all duration-200 ${isRepeat ? 'text-brand-500' : 'text-white/40 hover:text-white'}`}
+              className={`hidden sm:flex p-2 rounded-xl transition-all duration-300 ${isRepeat ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
-              <Repeat size={17} />
-            </button>
+              <Repeat size={18} />
+            </motion.button>
           </div>
 
           {/* Progress Bar */}
@@ -138,7 +154,6 @@ export default function PlayerBar() {
           />
         </div>
 
-      </div>
-    </div>
+    </motion.div>
   );
 }

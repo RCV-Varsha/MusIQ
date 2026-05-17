@@ -69,16 +69,13 @@ export function PlayerProvider({ children }) {
       
       let audioUrl = song.audio;
       if (audioUrl && !audioUrl.startsWith('http') && !audioUrl.startsWith('blob:')) {
-        const API_BASE = "http://localhost:3000";
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
         let normalizedPath = audioUrl.replace(/\\/g, "/");
         if (normalizedPath.startsWith('/')) {
             normalizedPath = normalizedPath.substring(1);
         }
         audioUrl = `${API_BASE}/${normalizedPath}`;
       }
-      
-      console.log("Playing:", song.title);
-      console.log("Audio URL:", audioUrl);
       
       audio.src = audioUrl;
       

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useFavorites } from '../context/FavoritesContext';
 
 const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, queueContext, color = "brand" }) => {
@@ -24,15 +25,28 @@ const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, qu
   };
 
   return (
-    <div 
+    <motion.div 
+      whileHover={{ y: -2, scale: 1.01 }}
+      whileTap={{ scale: 0.99 }}
       onClick={() => onPlayToggle(index, queueContext)}
-      className={`group flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-300 ${
+      className={`group relative flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-colors duration-300 ${
         isActive 
-          ? `bg-white/10 border border-${color}-500/20` 
+          ? `bg-white/10 shadow-[0_5px_15px_var(--brand-glow-subtle)]` 
           : "bg-transparent border border-transparent row-hover"
       }`}
     >
-      <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
+      {/* Active State Border Indicator */}
+      {isActive && (
+        <motion.div 
+          layoutId="activeSongIndicator"
+          className="absolute inset-0 border border-brand-500/30 rounded-2xl pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+      )}
+      
+      <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1 relative z-10">
         {/* Thumbnail / Action Area */}
         <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl bg-dark-card overflow-hidden flex-shrink-0 flex items-center justify-center shadow-lg">
           <div className={`absolute inset-0 bg-gradient-to-br from-${color}-900/50 to-dark-bg opacity-30`}></div>
@@ -73,7 +87,7 @@ const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, qu
           onClick={handleHeartClick}
           className={`p-2 transition-all duration-300 transform ${
             favoriteStatus 
-              ? `text-${color}-500 hover:scale-110 drop-shadow-[0_0_8px_rgba(var(--brand-glow),0.6)]` 
+              ? `text-brand-500 hover:scale-110 drop-shadow-[0_0_12px_var(--brand-glow)]` 
               : 'text-white/40 hover:text-white hover:scale-110'
           }`}
         >
@@ -86,13 +100,13 @@ const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, qu
         {/* Isolated Micro-animation container */}
         {isBursting && (
           <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            <div className="absolute animate-heart-burst-1"><Heart size={10} className={`fill-${color}-500 text-${color}-500`} /></div>
-            <div className="absolute animate-heart-burst-2"><Heart size={14} className={`fill-${color}-400 text-${color}-400`} /></div>
-            <div className="absolute animate-heart-burst-3"><Heart size={8} className="fill-white text-white" /></div>
+            <div className="absolute animate-heart-burst-1"><Heart size={10} className={`fill-brand-500 text-brand-500`} /></div>
+            <div className="absolute animate-heart-burst-2"><Heart size={14} className={`fill-brand-400 text-brand-400`} /></div>
+            <div className="absolute animate-heart-burst-3"><Heart size={8} className="fill-brand-300 text-brand-300" /></div>
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 });
 

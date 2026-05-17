@@ -64,23 +64,16 @@ if (Array.isArray(moods)) {
       return res.status(400).json({ error: "moods cannot be empty. Please provide at least one valid mood." });
     }
 
-    console.log(`Input Summary:`);
-    console.log(`- Files count: ${files.length}`);
-    console.log(`- Detected Mood: ${detectedMood}`);
-    console.log(`- Parsed Moods: ${normalizedMoods.join(", ")}`);
+    console.log(`Processing upload for ${files.length} files. Detected mood: ${detectedMood}`);
 
     const uploadedSongs = [];
 
     for (const file of files) {
-      console.log(`\nProcessing file: ${file.originalname}`);
       
       // 1. Upload to ImageKit
-      console.log("- Uploading to ImageKit...");
       const storageResult = await uploadFile(file);
-      console.log(`- ImageKit URL: ${storageResult.url}`);
 
       // 2. Extract metadata from buffer
-      console.log("- Extracting metadata...");
       let metadata;
       try {
         metadata = await mm.parseBuffer(file.buffer, { mimeType: file.mimetype });
@@ -90,7 +83,6 @@ if (Array.isArray(moods)) {
       }
 
       // 3. Create Song in MongoDB
-      console.log("- Saving to MongoDB...");
       const song = await Song.create({
         title: metadata.common.title || file.originalname,
         artist: metadata.common.artist || "Unknown Artist",
@@ -98,12 +90,10 @@ if (Array.isArray(moods)) {
         detectedMood: detectedMood.toLowerCase(),
         moods: normalizedMoods,
       });
-      console.log(`- MongoDB Save Success: ${song._id}`);
 
       uploadedSongs.push(song);
     }
 
-    console.log("\n--- Upload Process Completed Successfully ---");
     res.status(201).json({
       success: true,
       message: `${uploadedSongs.length} songs uploaded successfully`,
@@ -128,7 +118,6 @@ const getSongs = async (req, res) => {
     }
 
     const filteredMood = mood.toLowerCase();
-    console.log(`Fetching songs for mood: ${filteredMood}`);
 
     const songs = await Song.find({
       $or: [

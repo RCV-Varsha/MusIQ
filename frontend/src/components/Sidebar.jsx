@@ -1,5 +1,6 @@
 import React from 'react';
-import { Home, Search, Library, Radio, Heart, Settings } from 'lucide-react';
+import { Home, Search, Library, Radio, Heart, Settings, Music } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Sidebar({ activeSection, setActiveSection }) {
   const navItems = [
@@ -11,13 +12,22 @@ export default function Sidebar({ activeSection, setActiveSection }) {
   ];
 
   return (
-    <div className="w-64 h-full glass rounded-none border-t-0 border-l-0 border-b-0 flex flex-col z-40 bg-dark-card/95 backdrop-blur-xl shadow-2xl">
+    <div className="w-64 h-full glass rounded-none border-t-0 border-l-0 border-b-0 flex flex-col z-40 bg-[var(--bg-card)]/60 backdrop-blur-3xl shadow-2xl border-white/5">
       
-      {/* Logo - Recognizable but Stable */}
-      <div className="p-8 pb-10">
-        <h1 className="text-2xl font-bold tracking-tight text-white">
-          Mus<span className="text-brand-500">IQ</span>
-        </h1>
+      {/* Brand Identity - Pure UI-Integrated Typography */}
+      <div className="pl-8 pt-10 pb-10 flex flex-col select-none group cursor-pointer relative justify-center">
+        {/* Barely-there atmospheric integration */}
+        <div className="absolute left-8 top-12 w-20 h-4 bg-brand-500/5 blur-[40px] pointer-events-none transition-opacity duration-700 group-hover:bg-brand-500/10" />
+        
+        {/* Typography - Pure, calm, and naturally embedded */}
+        <h2 className="text-3xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-100 to-brand-500 text-glow leading-none">
+          MusIQ
+        </h2>
+        
+        {/* Studio Signature */}
+        <span className="text-[9px] font-light tracking-[0.25em] text-brand-100/40 mt-1.5 uppercase transition-opacity duration-700 group-hover:text-brand-100/70">
+          Crafted by RCV
+        </span>
       </div>
 
       {/* Navigation - Standardized */}
@@ -25,34 +35,52 @@ export default function Sidebar({ activeSection, setActiveSection }) {
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
           return (
-          <button 
+          <motion.button 
             key={item.id}
             onClick={() => setActiveSection(item.id)}
-            className={`w-full flex items-center gap-4 px-4 py-2.5 rounded-xl transition-all duration-300 ${
+            whileHover={{ x: 5 }}
+            whileTap={{ scale: 0.98 }}
+            className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${
               isActive 
-                ? 'bg-brand-500/10 text-white border border-brand-500/20' 
+                ? 'bg-brand-500/10 text-white' 
                 : 'text-white/40 hover:text-white hover:bg-white/5'
             }`}
           >
-            <item.icon size={20} className={isActive ? 'text-brand-500' : ''} />
-            <span className="font-bold text-sm">{item.name}</span>
-          </button>
+            {isActive && (
+              <motion.div 
+                layoutId="activeNavBorder"
+                className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-500 rounded-r-full"
+                style={{ boxShadow: '0 0 10px var(--brand-glow), 0 0 20px var(--brand-glow-subtle)' }}
+              />
+            )}
+            <item.icon size={20} className={isActive ? 'text-brand-500 drop-shadow-[0_0_8px_var(--brand-glow)]' : ''} />
+            <span className="font-bold text-sm tracking-wide">{item.name}</span>
+          </motion.button>
         )})}
       </nav>
 
-      {/* Bottom Action - Standardized */}
-      <div className="p-4 mb-24 border-t border-white/5 pt-6">
-        <button 
+      {/* Bottom Action & Branding */}
+      <div className="p-4 mb-24 border-t border-white/5 pt-6 flex flex-col gap-6">
+        <motion.button 
           onClick={() => setActiveSection('settings')}
-          className={`w-full flex items-center gap-4 px-4 py-2.5 rounded-xl transition-all duration-300 ${
+          whileHover={{ x: 5 }}
+          whileTap={{ scale: 0.98 }}
+          className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${
             activeSection === 'settings' 
-              ? 'bg-brand-500/10 text-white border border-brand-500/20' 
+              ? 'bg-brand-500/10 text-white' 
               : 'text-white/40 hover:text-white hover:bg-white/5'
           }`}
         >
-          <Settings size={20} className={activeSection === 'settings' ? 'text-brand-500' : ''} />
-          <span className="font-bold text-sm">Settings</span>
-        </button>
+          {activeSection === 'settings' && (
+            <motion.div 
+              layoutId="activeNavBorder"
+              className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-500 rounded-r-full"
+              style={{ boxShadow: '0 0 10px var(--brand-glow), 0 0 20px var(--brand-glow-subtle)' }}
+            />
+          )}
+          <Settings size={20} className={activeSection === 'settings' ? 'text-brand-500 drop-shadow-[0_0_8px_var(--brand-glow)]' : ''} />
+          <span className="font-bold text-sm tracking-wide">Settings</span>
+        </motion.button>
       </div>
 
     </div>

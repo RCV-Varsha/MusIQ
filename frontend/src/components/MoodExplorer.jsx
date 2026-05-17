@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Play, Loader2, Music, Wind, Heart, Zap, Activity, Target, Sun, Smile, Moon, Disc, Map } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { explorerMoods } from '../config/moodThemes';
 import MoodSongs from './MoodSongs';
 import PlaylistView from './PlaylistView';
 
@@ -8,19 +10,7 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
   const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState('grid');
 
-  const manualMoods = [
-    { name: "Chill", color: "from-blue-600 to-cyan-400", baseColor: "cyan", accent: "text-cyan-400", icon: Wind },
-    { name: "Romantic", color: "from-rose-600 to-pink-500", baseColor: "rose", accent: "text-rose-400", icon: Heart },
-    { name: "Focus", color: "from-indigo-600 to-violet-500", baseColor: "indigo", accent: "text-indigo-400", icon: Zap },
-    { name: "Energetic", color: "from-orange-600 to-red-500", baseColor: "orange", accent: "text-orange-400", icon: Activity },
-    { name: "Motivational", color: "from-amber-600 to-yellow-500", baseColor: "amber", accent: "text-amber-400", icon: Target },
-    { name: "Party", color: "from-fuchsia-600 to-purple-500", baseColor: "fuchsia", accent: "text-fuchsia-400", icon: Music },
-    { name: "Devotional", color: "from-yellow-600 to-orange-400", baseColor: "yellow", accent: "text-yellow-400", icon: Sun },
-    { name: "Feel Good", color: "from-emerald-600 to-green-400", baseColor: "emerald", accent: "text-emerald-400", icon: Smile },
-    { name: "Late Night", color: "from-violet-800 to-indigo-900", baseColor: "violet", accent: "text-violet-400", icon: Moon },
-    { name: "Retro", color: "from-teal-600 to-emerald-500", baseColor: "teal", accent: "text-teal-400", icon: Disc },
-    { name: "Travel", color: "from-sky-600 to-blue-500", baseColor: "sky", accent: "text-sky-400", icon: Map },
-  ];
+
 
   const handleMoodSelect = async (moodName) => {
     // Normalize mood for backend query (kebab-case)
@@ -30,7 +20,8 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
     setView('playlist');
     
     try {
-      const response = await axios.get(`http://localhost:3000/songs?mood=${normalizedMood}`);
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      const response = await axios.get(`${API_BASE}/songs?mood=${normalizedMood}`);
       if (response.data && response.data.songs) {
         setSongs(response.data.songs);
       }
@@ -46,7 +37,6 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
   };
 
   if (view === 'playlist') {
-    const activeMood = manualMoods.find(m => m.name.toLowerCase().trim().replace(/\s+/g, '-') === emotion);
     
     return (
       <PlaylistView 
@@ -55,7 +45,6 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
         songs={songs}
         isLoading={isLoading}
         onBack={() => setView('grid')}
-        color={activeMood?.baseColor || "brand"}
       />
     );
   }
@@ -69,45 +58,47 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
       </div>
 
       {/* Mood Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8 pb-20">
-        {manualMoods.map((mood) => {
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-20">
+        {explorerMoods.map((mood) => {
           const normalizedCurrent = mood.name.toLowerCase().trim().replace(/\s+/g, '-');
           const isActive = emotion === normalizedCurrent;
           const Icon = mood.icon || Music;
 
           return (
-            <div 
+            <motion.div 
               key={mood.name}
               onClick={() => handleMoodSelect(mood.name)}
-              className={`group relative aspect-square rounded-2xl p-6 md:p-8 cursor-pointer overflow-hidden transition-all duration-500 border border-white/5 flex flex-col justify-between ${
+              whileHover={{ y: -4, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`group relative h-20 md:h-24 rounded-[2.5rem] px-5 md:px-6 cursor-pointer overflow-hidden transition-colors duration-500 border flex items-center gap-4 ${
                 isActive 
-                  ? "bg-white/10 border-white/20 shadow-2xl scale-[1.03]" 
-                  : "bg-white/5 hover:bg-white/10 hover:border-white/10 hover:scale-[1.03]"
+                  ? "bg-white/10 border-white/20 shadow-[0_10px_30px_var(--brand-glow-subtle)]" 
+                  : "bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10 hover:shadow-2xl"
               }`}
             >
               {/* Rich Vibrant Gradient */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${mood.color} opacity-30 group-hover:opacity-50 transition-opacity duration-700`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${mood.gradient} opacity-40 group-hover:opacity-70 transition-opacity duration-700`} />
               
-              <div className="relative z-10">
-                <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center transition-all duration-500 ${
-                  isActive ? "bg-white text-black shadow-xl" : "bg-white/5 text-white/30 group-hover:bg-white/10 group-hover:text-white"
+              <div className="relative z-10 flex-shrink-0">
+                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center transition-all duration-500 backdrop-blur-md ${
+                  isActive ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.5)]" : "bg-white/10 text-white/50 group-hover:bg-white/20 group-hover:text-white"
                 }`}>
-                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
               </div>
 
-              <div className="relative z-10 flex flex-col gap-1.5">
-                <h3 className={`font-bold text-xl md:text-2xl tracking-tight transition-colors ${isActive ? "text-white" : "text-white/40 group-hover:text-white"}`}>
+              <div className="relative z-10 flex flex-col flex-1 min-w-0">
+                <h3 className={`font-bold text-lg md:text-xl tracking-tight transition-colors truncate ${isActive ? "text-white drop-shadow-md" : "text-white/60 group-hover:text-white"}`}>
                   {mood.name}
                 </h3>
                 {isActive && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Listening</span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse shadow-[0_0_5px_white]" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/70">Listening</span>
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

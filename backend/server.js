@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 // Example route used by FacialExpression.jsx for logging/tracking
 app.post('/emotion', (req, res) => {
-  console.log("Received emotion from frontend:", req.body.emotion);
   res.json({ status: "ok", emotion: req.body.emotion });
 });
 

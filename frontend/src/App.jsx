@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FacialExpression from './components/FacialExpression';
 import MoodSongs from "./components/MoodSongs";
 import PlayerBar from "./components/PlayerBar";
@@ -12,8 +12,9 @@ import LibraryView from "./components/LibraryView";
 import PlaylistsView from "./components/PlaylistsView";
 import SettingsView from "./components/SettingsView";
 import axios from 'axios';
-import { useEffect } from 'react';
+
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function AppContent() {
   const [emotion, setEmotion] = useState("");
@@ -50,11 +51,22 @@ function AppContent() {
     }
   }, [activeSection]); // Re-run on section change to ensure persistence if settings changed
 
+  // Mood appearance
+  useEffect(() => {
+    const root = document.documentElement;
+    if (emotion) {
+      root.setAttribute('data-mood', emotion);
+    } else {
+      root.setAttribute('data-mood', 'neutral');
+    }
+  }, [emotion]);
+
   // Global fetch for all songs to reuse across components
   useEffect(() => {
     const fetchAllSongs = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/songs");
+        const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+        const response = await axios.get(`${API_BASE}/songs`);
         if (response.data && response.data.songs) {
           setAllSongs(response.data.songs);
         }
@@ -98,7 +110,15 @@ function AppContent() {
       <main className="flex-1 flex flex-col h-screen overflow-y-auto pb-36">
         
         {/* Top Header / Background Gradient */}
-        <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-brand-900/20 to-transparent pointer-events-none -z-10" />
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-[600px] pointer-events-none -z-10 opacity-50 mix-blend-screen transition-colors duration-1000 ease-in-out"
+          style={{
+            background: 'radial-gradient(circle at 50% 0%, var(--brand-glow) 0%, transparent 70%)'
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          transition={{ duration: 2 }}
+        />
 
         <div className="p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col gap-8 md:gap-12">
           
@@ -118,10 +138,10 @@ function AppContent() {
           {activeSection === "now-playing" ? (
             <>
               {/* Top Section: Camera & Current Context */}
-              <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                 
                 {/* Left: Camera feature */}
-                <div className="flex flex-col gap-4">
+                <div className="lg:col-span-7 flex flex-col gap-4">
                   <h2 className="section-subtitle text-[11px]">Mood Scanner</h2>
                   <FacialExpression 
                     setSongs={setSongs} 
@@ -132,57 +152,81 @@ function AppContent() {
                 </div>
 
                 {/* Right: Current Context / Album Art placeholder */}
-                <div className="flex flex-col gap-4 h-full">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="lg:col-span-5 flex flex-col gap-4 h-full"
+                >
                   <h2 className="section-subtitle text-[11px]">Now Playing</h2>
-                  <div className="flex-1 glass rounded-2xl p-8 flex flex-col justify-end relative overflow-hidden group min-h-[300px]">
+                  <div className="flex-1 glass rounded-[2rem] p-8 flex flex-col justify-between relative overflow-hidden group min-h-[300px]">
                     {/* Background Art */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-900/40 to-dark-bg/80 mix-blend-overlay transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-brand-900/20 to-transparent mix-blend-overlay transition-transform duration-700 group-hover:scale-105" />
                     
-                    <div className="relative z-10 flex flex-col gap-4">
+                    <div className="relative z-10 flex flex-col h-full justify-between">
                       {currentSong ? (
                         <>
-                          <div className="flex justify-between items-end">
+                          <div className="flex justify-between items-end mt-auto">
                             <div>
-                              <span className="text-brand-500 font-bold tracking-widest uppercase text-sm mb-2 block">
+                              <span className="text-brand-500 font-bold tracking-widest uppercase text-sm mb-2 block transition-colors duration-700">
                                 {emotion ? `Mood: ${emotion}` : 'Now Playing'}
                               </span>
-                              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white text-glow mb-1 truncate">
+                              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white text-glow mb-2 truncate">
                                 {currentSong.title}
                               </h1>
-                              <p className="text-white/70 text-lg font-medium">{currentSong.artist}</p>
+                              <p className="text-white/70 text-xl font-medium">{currentSong.artist}</p>
                             </div>
                             
                             {/* Animated waveform in context panel */}
                             {isPlaying && (
-                              <div className="flex gap-1 h-8 items-end opacity-80 mb-2">
-                                <div className="w-1.5 bg-brand-500 animate-[equalizer-bounce_1s_infinite_0.1s] rounded-t-sm" />
-                                <div className="w-1.5 bg-brand-500 animate-[equalizer-bounce_1.2s_infinite_0.3s] rounded-t-sm" />
-                                <div className="w-1.5 bg-brand-500 animate-[equalizer-bounce_0.8s_infinite_0s] rounded-t-sm" />
-                                <div className="w-1.5 bg-brand-500 animate-[equalizer-bounce_1.1s_infinite_0.4s] rounded-t-sm" />
-                                <div className="w-1.5 bg-brand-500 animate-[equalizer-bounce_0.9s_infinite_0.2s] rounded-t-sm" />
+                              <div className="flex gap-1.5 h-10 items-end opacity-80 mb-2">
+                                <div className="w-2 bg-brand-500 animate-[equalizer-bounce_1s_infinite_0.1s] rounded-t-sm transition-colors duration-700" />
+                                <div className="w-2 bg-brand-500 animate-[equalizer-bounce_1.2s_infinite_0.3s] rounded-t-sm transition-colors duration-700" />
+                                <div className="w-2 bg-brand-500 animate-[equalizer-bounce_0.8s_infinite_0s] rounded-t-sm transition-colors duration-700" />
+                                <div className="w-2 bg-brand-500 animate-[equalizer-bounce_1.1s_infinite_0.4s] rounded-t-sm transition-colors duration-700" />
+                                <div className="w-2 bg-brand-500 animate-[equalizer-bounce_0.9s_infinite_0.2s] rounded-t-sm transition-colors duration-700" />
                               </div>
                             )}
                           </div>
                         </>
                       ) : (
                         <>
-                          <span className="text-brand-500 font-bold tracking-widest uppercase text-sm">
-                            {emotion ? 'Detected Mood' : 'Awaiting Input'}
-                          </span>
-                          <h1 className="text-5xl font-bold tracking-tighter text-white capitalize text-glow">
-                            {emotion || "Ready to Scan"}
-                          </h1>
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <motion.div 
+                                animate={{ opacity: [0.3, 1, 0.3] }} 
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                className="w-1.5 h-1.5 rounded-full bg-brand-400 shadow-[0_0_8px_var(--brand-glow)]"
+                              />
+                              <span className="text-brand-300/80 font-medium tracking-[0.2em] uppercase text-[10px]">
+                                AI Mood Engine Active
+                              </span>
+                            </div>
+                            <h2 className="text-3xl font-bold tracking-tight text-white/90">
+                              {emotion ? emotion : "Awaiting Input"}
+                            </h2>
+                          </div>
+                          
+                          {/* Ambient Visualizer */}
+                          <div className="h-16 flex items-center gap-1.5 mt-auto opacity-50">
+                            {[...Array(6)].map((_, i) => (
+                              <div 
+                                key={i} 
+                                className="w-1.5 bg-brand-500/40 rounded-full h-4 animate-pulse" 
+                                style={{ animationDelay: `${i * 0.15}s` }} 
+                              />
+                            ))}
+                          </div>
                         </>
                       )}
                     </div>
                   </div>
-                </div>
-
+                </motion.div>
               </section>
 
               {/* Playlist Section */}
               <section className="w-full">
-                <MoodSongs songs={songs} emotion={emotion} />
+                <MoodSongs songs={allSongs} emotion={emotion} />
               </section>
             </>
           ) : activeSection === "favorites" ? (
