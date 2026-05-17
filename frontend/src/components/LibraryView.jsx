@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, SortAsc, SortDesc, Filter, Music, Loader2, Clock } from 'lucide-react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import SongRow from './SongRow';
 import { usePlayer } from '../context/PlayerContext';
 
@@ -124,22 +125,34 @@ export default function LibraryView({ initialSongs = [] }) {
       </div>
 
       {/* Songs List */}
-      <div className="flex flex-col gap-2 min-h-[400px]">
+      <motion.div 
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: { opacity: 0 },
+          show: { opacity: 1, transition: { staggerChildren: 0.03 } }
+        }}
+        className="flex flex-col gap-2 min-h-[400px]"
+      >
         {processedSongs.length > 0 ? (
           processedSongs.map((song, i) => {
             const isActive = currentSong && (currentSong._id === song._id || currentSong.audio === song.audio);
             return (
-              <SongRow 
-                key={song._id || song.audio || i}
-                song={song}
-                index={i}
-                isActive={isActive}
-                isPlaying={isPlaying}
-                onPlayToggle={(idx) => {
-                  if (isActive) togglePlay();
-                  else playSong(idx, processedSongs);
-                }}
-              />
+              <motion.div 
+                key={song._id || song.audio || i} 
+                variants={{ hidden: { opacity: 0, y: 5 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
+              >
+                <SongRow 
+                  song={song}
+                  index={i}
+                  isActive={isActive}
+                  isPlaying={isPlaying}
+                  onPlayToggle={(idx) => {
+                    if (isActive) togglePlay();
+                    else playSong(idx, processedSongs);
+                  }}
+                />
+              </motion.div>
             );
           })
         ) : (
@@ -153,7 +166,7 @@ export default function LibraryView({ initialSongs = [] }) {
             )}
           </div>
         )}
-      </div>
+      </motion.div>
 
     </div>
   );

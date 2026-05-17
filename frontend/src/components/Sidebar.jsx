@@ -45,19 +45,28 @@ export default function Sidebar({ activeSection, setActiveSection }) {
             whileTap={{ scale: 0.98 }}
             className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-500 ${
               isActive 
-                ? 'bg-brand-500/10 text-white' 
+                ? 'text-white' 
                 : 'text-white/40 hover:text-white hover:bg-white/5'
             }`}
           >
             {isActive && (
-              <motion.div 
-                layoutId="activeNavBorder"
-                className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-500 rounded-r-full"
-                style={{ boxShadow: '0 0 10px var(--brand-glow), 0 0 20px var(--brand-glow-subtle)' }}
-              />
+              <>
+                <motion.div 
+                  layoutId="sidebarActiveIndicator"
+                  className="absolute inset-0 bg-brand-500/5 rounded-xl border border-brand-500/10"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                />
+                <motion.div 
+                  layoutId="activeNavBorder"
+                  className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-500 rounded-r-full z-10"
+                  style={{ boxShadow: '0 0 10px var(--brand-glow-subtle)' }}
+                  transition={{ type: "spring", stiffness: 200, damping: 30 }}
+                />
+              </>
             )}
-            <item.icon size={20} className={isActive ? 'text-brand-500 drop-shadow-[0_0_8px_var(--brand-glow)]' : ''} />
-            <span className="font-bold text-sm tracking-wide">{item.name}</span>
+            <item.icon size={20} className={`relative z-10 ${isActive ? 'text-brand-500 drop-shadow-[0_0_8px_var(--brand-glow)]' : ''}`} />
+            <span className="font-bold text-sm tracking-wide relative z-10">{item.name}</span>
           </motion.button>
         )})}
       </nav>

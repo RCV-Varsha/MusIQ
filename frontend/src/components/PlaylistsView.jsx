@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Heart, Clock, Smile, Wind, Moon, Zap, Music } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useFavorites } from '../context/FavoritesContext';
 import { usePlayer } from '../context/PlayerContext';
 import PlaylistView from './PlaylistView';
@@ -65,10 +66,19 @@ export default function PlaylistsView({ allSongs = [] }) {
         <h2 className="page-title">Smart Playlists</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div 
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: { opacity: 0 },
+          show: { opacity: 1, transition: { staggerChildren: 0.03 } }
+        }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {smartPlaylists.map((playlist) => (
-          <button
+          <motion.button
             key={playlist.id}
+            variants={{ hidden: { opacity: 0, y: 5 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
             onClick={() => setSelectedPlaylist(playlist)}
             className="group relative flex items-center gap-6 p-6 glass-card hover:scale-[1.02] transition-all duration-300 hover:border-white/10"
           >
@@ -89,9 +99,9 @@ export default function PlaylistsView({ allSongs = [] }) {
                   <Music size={16} className="text-white/80" />
                </div>
             </div>
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -227,20 +227,20 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                   <span className="text-xl font-bold text-white text-glow mb-1">You seem {emotion} today ✨</span>
                   <span className="text-xs font-medium text-white/50 uppercase tracking-widest mt-1 mb-6">AI Detected Mood</span>
                   
-                  <div className="flex flex-col sm:flex-row justify-center gap-3 w-full max-w-sm px-4 mx-auto">
+                  <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 w-full max-w-md px-4 mx-auto mt-2">
                     <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => fetchSongs(emotion)}
-                      className="flex-1 py-3 bg-gradient-to-r from-brand-600 to-brand-500 rounded-xl text-white text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_var(--brand-glow)] transition-colors duration-500"
+                      className="flex-1 py-3.5 bg-gradient-to-r from-brand-600/90 to-brand-500/90 hover:from-brand-500 hover:to-brand-400 rounded-xl text-white text-xs md:text-sm font-bold tracking-wider uppercase shadow-[0_4px_15px_var(--brand-glow-subtle)] transition-all duration-500"
                     >
                       Play Recommended
                     </motion.button>
                     <motion.button 
-                      whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveSection('moods')}
-                      className="flex-1 py-3 bg-white/5 border border-white/10 rounded-xl text-white/80 text-sm font-bold tracking-wider uppercase transition-colors duration-500"
+                      className="flex-1 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white/70 hover:text-white/90 text-xs md:text-sm font-bold tracking-wider uppercase transition-all duration-500"
                     >
                       Choose Another
                     </motion.button>

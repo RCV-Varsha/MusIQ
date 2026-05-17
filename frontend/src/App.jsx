@@ -86,26 +86,42 @@ function AppContent() {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-screen overflow-y-auto pb-40 lg:pb-36">
         
-        {/* Top Header / Background Gradient */}
-        <motion.div 
-          className="absolute top-0 left-0 right-0 h-[600px] pointer-events-none -z-10 opacity-50 mix-blend-screen transition-colors duration-1000 ease-in-out"
-          style={{
-            background: 'radial-gradient(circle at 50% 0%, var(--brand-glow) 0%, transparent 70%)'
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 2 }}
-        />
+        {/* Ambient Mesh Background */}
+        <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden mix-blend-screen">
+          <motion.div 
+            animate={{ 
+              opacity: [0.02, 0.04, 0.02], 
+              scale: [1, 1.05, 1],
+              rotate: [0, 5, 0]
+            }}
+            transition={{ duration: 45, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-brand-500/20 blur-[120px]"
+          />
+          <motion.div 
+            animate={{ 
+              opacity: [0.01, 0.03, 0.01], 
+              scale: [1.05, 0.95, 1.05],
+              rotate: [0, -5, 0]
+            }}
+            transition={{ duration: 60, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-brand-400/10 blur-[100px]"
+          />
+        </div>
 
         <div className="p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col gap-8 md:gap-12">
           
           {/* Header */}
           <header className="flex justify-between items-center lg:hidden sticky top-0 bg-dark-bg/80 backdrop-blur-md z-30 py-3 md:py-4 border-b border-white/5">
-            <div className="flex flex-col">
-              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-none">
-                Mus<span className="text-brand-500">IQ</span>
-              </h1>
-              <span className="text-[9px] font-light tracking-[0.25em] text-white/40 mt-1 uppercase">by RCV</span>
+            <div className="flex flex-col select-none relative justify-center">
+              <h2 className="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-100 to-brand-500 text-glow leading-none">
+                MusIQ
+              </h2>
+              <span className="text-[9px] font-medium tracking-wide text-brand-100/60 mt-1">
+                emotion-adaptive music experience
+              </span>
+              <span className="text-[8px] font-light tracking-[0.25em] text-brand-100/40 mt-1 uppercase">
+                by RCV
+              </span>
             </div>
             <button 
               onClick={() => setActiveSection('settings')}

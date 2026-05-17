@@ -58,7 +58,15 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
       </div>
 
       {/* Mood Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-20">
+      <motion.div 
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: { opacity: 0 },
+          show: { opacity: 1, transition: { staggerChildren: 0.03 } }
+        }}
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-20"
+      >
         {explorerMoods.map((mood) => {
           const normalizedCurrent = mood.name.toLowerCase().trim().replace(/\s+/g, '-');
           const isActive = emotion === normalizedCurrent;
@@ -67,6 +75,7 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
           return (
             <motion.div 
               key={mood.name}
+              variants={{ hidden: { opacity: 0, y: 5 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
               onClick={() => handleMoodSelect(mood.name)}
               whileHover={{ y: -4, scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -101,7 +110,7 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 }

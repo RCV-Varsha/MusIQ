@@ -62,7 +62,16 @@ export default function PlayerBar() {
             <div className="absolute inset-0 m-auto w-3 h-3 md:w-4 md:h-4 bg-dark-bg/80 backdrop-blur-md rounded-full z-20" />
           </motion.div>
           <div className="flex flex-col min-w-0">
-            <span className="text-white font-bold truncate text-sm md:text-base leading-tight drop-shadow-md">{currentSong.title}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-white font-bold truncate text-sm md:text-base leading-tight drop-shadow-md">{currentSong.title}</span>
+              {isPlaying && (
+                <div className="flex gap-[2px] h-3 items-end opacity-30">
+                  <div className="w-[2px] bg-brand-400 rounded-full animate-[equalizer-bounce_2.5s_infinite_0.1s]" />
+                  <div className="w-[2px] bg-brand-400 rounded-full animate-[equalizer-bounce_3s_infinite_0.4s]" />
+                  <div className="w-[2px] bg-brand-400 rounded-full animate-[equalizer-bounce_2.2s_infinite_0s]" />
+                </div>
+              )}
+            </div>
             <span className="text-white/50 text-xs truncate">{currentSong.artist}</span>
           </div>
         </div>
