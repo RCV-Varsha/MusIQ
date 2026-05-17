@@ -133,7 +133,7 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
 
   const fetchSongs = async (mood) => {
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL;
       axios.post(`${API_BASE}/emotion`, { emotion: mood }).catch(console.error);
       const response = await axios.get(`${API_BASE}/songs?mood=${mood}`);
       if (response.data && response.data.songs) {

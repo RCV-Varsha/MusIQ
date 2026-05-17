@@ -20,7 +20,7 @@ export default function MoodExplorer({ songs, setSongs, emotion, setEmotion }) {
     setView('playlist');
     
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      const API_BASE = import.meta.env.VITE_API_BASE_URL;
       const response = await axios.get(`${API_BASE}/songs?mood=${normalizedMood}`);
       if (response.data && response.data.songs) {
         setSongs(response.data.songs);

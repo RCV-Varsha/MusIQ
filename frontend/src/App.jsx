@@ -65,7 +65,8 @@ function AppContent() {
   useEffect(() => {
     const fetchAllSongs = async () => {
       try {
-        const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+        const API_BASE = import.meta.env.VITE_API_BASE_URL;
+        console.log("Debugging VITE_API_BASE_URL:", import.meta.env.VITE_API_BASE_URL);
         const response = await axios.get(`${API_BASE}/songs`);
         if (response.data && response.data.songs) {
           setAllSongs(response.data.songs);
