@@ -160,7 +160,7 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
       {/* Camera / Status Card */}
       <motion.div 
         layout
-        className={`relative w-full ${isDetecting || !scanComplete ? 'aspect-video' : 'h-auto min-h-[320px] md:min-h-[380px]'} rounded-3xl overflow-hidden glass transition-all duration-700 shadow-2xl ${isDetecting ? 'shadow-[0_0_40px_var(--brand-glow)] border-brand-500/50' : 'border-white/10'}`}
+        className={`relative w-full ${isDetecting || !scanComplete ? 'aspect-video' : 'h-auto min-h-[260px] md:min-h-[380px]'} rounded-3xl overflow-hidden glass transition-all duration-700 shadow-2xl ${isDetecting ? 'shadow-[0_0_40px_var(--brand-glow)] border-brand-500/50' : 'border-white/10'}`}
       >
         
         {/* Scanning Glow Animation */}
@@ -213,7 +213,7 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
         
         {/* Success / Idle State Overlay */}
         {!isDetecting && (
-          <div className={`${scanComplete ? 'relative w-full h-full py-12 px-6' : 'absolute inset-0'} z-10 flex flex-col items-center justify-center bg-dark-card/60 backdrop-blur-sm`}>
+          <div className={`${scanComplete ? 'relative w-full h-full py-8 md:py-12 px-4 md:px-6' : 'absolute inset-0'} z-10 flex flex-col items-center justify-center bg-dark-card/60 backdrop-blur-sm`}>
              {status === "Initializing models..." ? (
                 <>
                   <Loader2 className="w-8 h-8 text-brand-500 animate-spin mb-4" />
@@ -221,18 +221,18 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                 </>
              ) : scanComplete ? (
                 <>
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-brand-500/20 flex items-center justify-center mb-3 md:mb-4 box-glow">
-                     <span className="text-2xl md:text-3xl">✨</span>
+                  <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-brand-500/20 flex items-center justify-center mb-2 md:mb-4 box-glow">
+                     <span className="text-xl md:text-3xl">✨</span>
                   </div>
-                  <span className="text-lg md:text-xl font-bold text-white text-glow mb-1">You seem {emotion} today</span>
-                  <span className="text-[10px] md:text-xs font-medium text-white/50 uppercase tracking-widest mt-1 mb-8 md:mb-10">AI Detected Mood</span>
+                  <span className="text-base md:text-xl font-bold text-white text-glow mb-1">You seem {emotion} today</span>
+                  <span className="text-[9px] md:text-xs font-medium text-white/50 uppercase tracking-widest mt-0.5 mb-5 md:mb-10">AI Detected Mood</span>
                   
-                  <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2.5 md:gap-4 w-full max-w-xs md:max-w-md mx-auto">
+                  <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2 md:gap-4 w-full max-w-[16rem] md:max-w-md mx-auto">
                     <motion.button 
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => fetchSongs(emotion)}
-                      className="flex-1 py-2.5 md:py-3 bg-gradient-to-r from-brand-600/90 to-brand-500/90 hover:from-brand-500 hover:to-brand-400 rounded-xl text-white text-xs md:text-sm font-bold tracking-wider uppercase shadow-[0_4px_15px_var(--brand-glow-subtle)] transition-all duration-500"
+                      className="flex-1 py-2 md:py-3 bg-gradient-to-r from-brand-600/90 to-brand-500/90 hover:from-brand-500 hover:to-brand-400 rounded-xl text-white text-[11px] md:text-sm font-bold tracking-wider uppercase shadow-[0_4px_15px_var(--brand-glow-subtle)] transition-all duration-500"
                     >
                       Play Recommended
                     </motion.button>
@@ -240,7 +240,7 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                       whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveSection('moods')}
-                      className="flex-1 py-2.5 md:py-3 bg-white/5 border border-white/10 rounded-xl text-white/70 hover:text-white/90 text-xs md:text-sm font-bold tracking-wider uppercase transition-all duration-500"
+                      className="flex-1 py-2 md:py-3 bg-white/5 border border-white/10 rounded-xl text-white/70 hover:text-white/90 text-[11px] md:text-sm font-bold tracking-wider uppercase transition-all duration-500"
                     >
                       Choose Another
                     </motion.button>

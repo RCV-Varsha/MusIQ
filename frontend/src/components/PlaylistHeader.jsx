@@ -21,7 +21,7 @@ export default function PlaylistHeader({
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="relative rounded-[2rem] overflow-hidden min-h-[220px] md:min-h-[260px] flex items-end p-6 md:p-8 border border-white/10 shadow-2xl group mb-6 md:mb-8"
+      className="relative rounded-3xl md:rounded-[2rem] overflow-hidden min-h-[180px] md:min-h-[260px] flex items-end p-5 md:p-8 border border-white/10 shadow-2xl group mb-6 md:mb-8"
     >
       {/* Background Cinematic Gradient */}
       <div className={`absolute inset-0 bg-gradient-to-br ${style.gradient} opacity-80 mix-blend-screen transition-opacity duration-1000`} />
@@ -63,10 +63,10 @@ export default function PlaylistHeader({
         <motion.div 
           whileHover={{ scale: 1.05, rotate: 2 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className={`w-32 h-32 md:w-48 md:h-48 rounded-[1.5rem] bg-gradient-to-br ${style.gradient} border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center flex-shrink-0 relative overflow-hidden`}
+          className={`w-24 h-24 md:w-48 md:h-48 rounded-2xl md:rounded-[1.5rem] bg-gradient-to-br ${style.gradient} border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.5)] md:shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center flex-shrink-0 relative overflow-hidden`}
         >
            <div className="absolute inset-0 bg-black/20" />
-           <Icon className="w-16 h-16 md:w-24 md:h-24 text-white relative z-10 drop-shadow-2xl opacity-90" strokeWidth={1.5} />
+           <Icon className="w-10 h-10 md:w-24 md:h-24 text-white relative z-10 drop-shadow-2xl opacity-90" strokeWidth={1.5} />
         </motion.div>
         
         {/* Text & Actions */}
@@ -84,7 +84,7 @@ export default function PlaylistHeader({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white leading-none drop-shadow-xl"
+            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-white leading-none drop-shadow-xl"
           >
             {title}
           </motion.h1>
@@ -93,9 +93,9 @@ export default function PlaylistHeader({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col gap-6 mt-4"
+            className="flex flex-col gap-4 md:gap-6 mt-2 md:mt-4"
           >
-            <p className="text-white/70 font-medium text-sm md:text-base max-w-xl leading-relaxed drop-shadow-md">
+            <p className="text-white/70 font-medium text-xs md:text-sm lg:text-base max-w-xl leading-relaxed drop-shadow-md">
               {description || `${songCount || 0} tracks • Curated for your current vibe`}
             </p>
             
@@ -104,9 +104,9 @@ export default function PlaylistHeader({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onPlay}
-                className={`flex items-center gap-2.5 ${style.buttonBg} px-6 md:px-8 py-3 md:py-3.5 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all ${style.buttonGlow}`}
+                className={`flex items-center gap-2.5 ${style.buttonBg} px-5 py-2.5 md:px-8 md:py-3.5 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all ${style.buttonGlow}`}
               >
-                <Play size={18} fill="currentColor" />
+                <Play size={16} fill="currentColor" className="md:w-[18px] md:h-[18px]" />
                 Play Mix
               </motion.button>
             </div>
