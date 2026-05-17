@@ -20,14 +20,17 @@ export default function Sidebar({ activeSection, setActiveSection }) {
         <div className="absolute left-8 top-12 w-20 h-4 bg-brand-500/5 blur-[40px] pointer-events-none transition-opacity duration-700 group-hover:bg-brand-500/10" />
         
         {/* Typography - Pure, calm, and naturally embedded */}
-        <h2 className="text-3xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-100 to-brand-500 text-glow leading-none">
-          MusIQ
-        </h2>
-        
-        {/* Studio Signature */}
-        <span className="text-[9px] font-light tracking-[0.25em] text-brand-100/40 mt-1.5 uppercase transition-opacity duration-700 group-hover:text-brand-100/70">
-          Crafted by RCV
-        </span>
+        <div className="flex flex-col">
+          <h2 className="text-3xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-100 to-brand-500 text-glow leading-none">
+            MusIQ
+          </h2>
+          <span className="text-[10px] font-medium tracking-wide text-brand-100/60 mt-1">
+            emotion-adaptive music experience
+          </span>
+          <span className="text-[9px] font-light tracking-[0.25em] text-brand-100/40 mt-1 uppercase transition-opacity duration-700 group-hover:text-brand-100/70">
+            by RCV
+          </span>
+        </div>
       </div>
 
       {/* Navigation - Standardized */}
@@ -40,7 +43,7 @@ export default function Sidebar({ activeSection, setActiveSection }) {
             onClick={() => setActiveSection(item.id)}
             whileHover={{ x: 5 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${
+            className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-500 ${
               isActive 
                 ? 'bg-brand-500/10 text-white' 
                 : 'text-white/40 hover:text-white hover:bg-white/5'
@@ -65,7 +68,7 @@ export default function Sidebar({ activeSection, setActiveSection }) {
           onClick={() => setActiveSection('settings')}
           whileHover={{ x: 5 }}
           whileTap={{ scale: 0.98 }}
-          className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${
+          className={`relative w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-colors duration-500 ${
             activeSection === 'settings' 
               ? 'bg-brand-500/10 text-white' 
               : 'text-white/40 hover:text-white hover:bg-white/5'

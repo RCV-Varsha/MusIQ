@@ -54,7 +54,7 @@ export default function PlayerBar() {
           <motion.div 
             animate={{ rotate: isPlaying ? 360 : 0 }}
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            className={`w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-brand-700 to-brand-900 flex-shrink-0 flex items-center justify-center overflow-hidden relative box-glow ${isPlaying ? 'shadow-[0_0_20px_var(--brand-glow)]' : ''}`}
+            className={`w-10 h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-brand-700 to-brand-900 flex-shrink-0 flex items-center justify-center overflow-hidden relative box-glow ${isPlaying ? 'shadow-[0_0_20px_var(--brand-glow)]' : ''}`}
           >
             <Music size={20} className="text-white/60 relative z-10" />
             <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-transparent" />
@@ -74,7 +74,7 @@ export default function PlayerBar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsShuffle(!isShuffle)}
-              className={`hidden sm:flex p-2 rounded-xl transition-all duration-300 ${isShuffle ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+              className={`hidden sm:flex p-2 rounded-xl transition-colors duration-500 ${isShuffle ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
               <Shuffle size={18} />
             </motion.button>
@@ -92,7 +92,7 @@ export default function PlayerBar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={togglePlay}
-              className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white text-black flex items-center justify-center transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] flex-shrink-0"
+              className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white text-black flex items-center justify-center transition-shadow duration-500 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] flex-shrink-0"
             >
               {isPlaying
                 ? <Pause size={22} className="fill-current" />
@@ -113,7 +113,7 @@ export default function PlayerBar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsRepeat(!isRepeat)}
-              className={`hidden sm:flex p-2 rounded-xl transition-all duration-300 ${isRepeat ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+              className={`hidden sm:flex p-2 rounded-xl transition-colors duration-500 ${isRepeat ? 'text-brand-500 bg-brand-500/10' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
             >
               <Repeat size={18} />
             </motion.button>

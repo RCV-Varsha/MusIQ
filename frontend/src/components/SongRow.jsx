@@ -85,7 +85,7 @@ const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, qu
       <div className="pr-4 relative flex items-center justify-center">
         <button 
           onClick={handleHeartClick}
-          className={`p-2 transition-all duration-300 transform ${
+          className={`p-2 transition-transform transition-colors duration-500 ${
             favoriteStatus 
               ? `text-brand-500 hover:scale-110 drop-shadow-[0_0_12px_var(--brand-glow)]` 
               : 'text-white/40 hover:text-white hover:scale-110'
@@ -93,7 +93,7 @@ const SongRow = React.memo(({ song, index, isActive, isPlaying, onPlayToggle, qu
         >
           <Heart 
             size={18} 
-            className={`transition-all duration-300 ${favoriteStatus ? 'fill-current' : 'fill-transparent'}`} 
+            className={`transition-colors duration-500 ${favoriteStatus ? 'fill-current' : 'fill-transparent'}`} 
           />
         </button>
 

@@ -84,13 +84,13 @@ const MoodSongs = React.memo(({ songs, emotion }) => {
         <div className="relative z-0 flex-1 min-h-[250px] md:min-h-full flex items-center justify-center overflow-hidden">
           {/* Deep layered auras */}
           <motion.div 
-            animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: [0.1, 0.3, 0.1], scale: [1, 1.05, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
             className="absolute right-[10%] top-[20%] w-64 h-64 bg-brand-600/10 blur-[80px] rounded-full mix-blend-screen"
           />
           <motion.div 
-            animate={{ opacity: [0.1, 0.4, 0.1], scale: [1.05, 0.95, 1.05] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: [0.05, 0.2, 0.05], scale: [1.05, 0.95, 1.05] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
             className="absolute left-[10%] bottom-[10%] w-48 h-48 bg-brand-400/10 blur-[60px] rounded-full mix-blend-screen"
           />
           
@@ -108,13 +108,13 @@ const MoodSongs = React.memo(({ songs, emotion }) => {
           
           {/* Tiny slow particle drift */}
           <motion.div 
-            animate={{ y: [-15, 15, -15], x: [-5, 5, -5], opacity: [0, 0.3, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [-10, 10, -10], x: [-3, 3, -3], opacity: [0, 0.15, 0] }}
+            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
             className="absolute top-1/3 left-1/4 w-1 h-1 bg-white rounded-full blur-[1px]"
           />
           <motion.div 
-            animate={{ y: [15, -15, 15], x: [5, -5, 5], opacity: [0, 0.2, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            animate={{ y: [10, -10, 10], x: [3, -3, 3], opacity: [0, 0.1, 0] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-brand-200 rounded-full blur-[1px]"
           />
         </div>

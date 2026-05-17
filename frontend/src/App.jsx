@@ -51,15 +51,7 @@ function AppContent() {
     }
   }, [activeSection]); // Re-run on section change to ensure persistence if settings changed
 
-  // Mood appearance
-  useEffect(() => {
-    const root = document.documentElement;
-    if (emotion) {
-      root.setAttribute('data-mood', emotion);
-    } else {
-      root.setAttribute('data-mood', 'neutral');
-    }
-  }, [emotion]);
+  // Removed global mood appearance to prevent theme leaking
 
   // Global fetch for all songs to reuse across components
   useEffect(() => {
@@ -124,10 +116,13 @@ function AppContent() {
         <div className="p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col gap-8 md:gap-12">
           
           {/* Header */}
-          <header className="flex justify-between items-center lg:hidden sticky top-0 bg-dark-bg/80 backdrop-blur-md z-30 py-4 border-b border-white/5">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
-              Mus<span className="text-brand-500">IQ</span>
-            </h1>
+          <header className="flex justify-between items-center lg:hidden sticky top-0 bg-dark-bg/80 backdrop-blur-md z-30 py-3 md:py-4 border-b border-white/5">
+            <div className="flex flex-col">
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-none">
+                Mus<span className="text-brand-500">IQ</span>
+              </h1>
+              <span className="text-[9px] font-light tracking-[0.25em] text-white/40 mt-1 uppercase">by RCV</span>
+            </div>
             <button 
               onClick={() => setIsSidebarOpen(true)}
               className="p-2 bg-white/5 rounded-xl border border-white/10 text-white/80 hover:text-white transition-all"
@@ -139,7 +134,7 @@ function AppContent() {
           {activeSection === "now-playing" ? (
             <>
               {/* Top Section: Camera & Current Context */}
-              <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-stretch">
                 
                 {/* Left: Camera feature */}
                 <div className="lg:col-span-7 flex flex-col gap-4">

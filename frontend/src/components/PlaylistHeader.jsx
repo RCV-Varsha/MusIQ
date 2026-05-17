@@ -32,13 +32,13 @@ export default function PlaylistHeader({
       {/* Subtle Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
          <motion.div 
-           animate={{ y: [0, -20, 0], opacity: [0.2, 0.5, 0.2] }}
-           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+           animate={{ y: [0, -10, 0], opacity: [0.1, 0.2, 0.1] }}
+           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
            className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-3xl mix-blend-screen"
          />
          <motion.div 
-           animate={{ y: [0, 30, 0], opacity: [0.1, 0.4, 0.1] }}
-           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+           animate={{ y: [0, 15, 0], opacity: [0.05, 0.15, 0.05] }}
+           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
            className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-3xl mix-blend-screen"
          />
       </div>

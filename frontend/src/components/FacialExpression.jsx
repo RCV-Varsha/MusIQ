@@ -168,9 +168,9 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
           {isDetecting && (
             <motion.div 
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0.3, 0.7, 0.3] }}
+              animate={{ opacity: [0.1, 0.4, 0.1] }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 pointer-events-none z-20 border-[3px] border-brand-500/40 rounded-3xl shadow-[inset_0_0_60px_var(--brand-glow)]" 
             />
           )}
@@ -227,12 +227,12 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                   <span className="text-xl font-bold text-white text-glow mb-1">You seem {emotion} today ✨</span>
                   <span className="text-xs font-medium text-white/50 uppercase tracking-widest mt-1 mb-6">AI Detected Mood</span>
                   
-                  <div className="flex flex-col gap-3 w-full max-w-[200px]">
+                  <div className="flex flex-col sm:flex-row justify-center gap-3 w-full max-w-sm px-4 mx-auto">
                     <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => fetchSongs(emotion)}
-                      className="w-full py-2.5 bg-gradient-to-r from-brand-600 to-brand-500 rounded-lg text-white text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_var(--brand-glow)]"
+                      className="flex-1 py-3 bg-gradient-to-r from-brand-600 to-brand-500 rounded-xl text-white text-sm font-bold tracking-wider uppercase shadow-[0_0_20px_var(--brand-glow)] transition-colors duration-500"
                     >
                       Play Recommended
                     </motion.button>
@@ -240,7 +240,7 @@ export default function FacialExpression({ setSongs, setEmotion, emotion, setAct
                       whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveSection('moods')}
-                      className="w-full py-2.5 bg-white/5 border border-white/10 rounded-lg text-white/80 text-sm font-bold tracking-wider uppercase transition-colors"
+                      className="flex-1 py-3 bg-white/5 border border-white/10 rounded-xl text-white/80 text-sm font-bold tracking-wider uppercase transition-colors duration-500"
                     >
                       Choose Another
                     </motion.button>
