@@ -1,42 +1,90 @@
-# MusIQ 🎧
+# MusIQ
 
-![MusIQ Banner](https://via.placeholder.com/1200x400?text=MusIQ+-+Your+Emotions+Deserve+A+Soundtrack)
+**An AI-powered emotion-adaptive music streaming experience.**
 
-MusIQ is a premium, cinematic, AI-powered music player that detects your mood and curates the perfect soundtrack for your exact emotional state. Built with modern web technologies and a focus on an incredibly smooth, glassmorphic UI, MusIQ transforms passive listening into an interactive, emotionally resonant experience.
+---
+
+## 🌐 Live Deployment
+
+**Frontend Experience:**
+[https://musiq-eight.vercel.app](https://musiq-eight.vercel.app)
+
+**Backend API Services:**
+[https://musiq-use2.onrender.com](https://musiq-use2.onrender.com)
+
+---
+
+## 📸 Experience Preview
+
+### Home Experience
+![Home](./screenshots/home.png)
+
+### Mood Detection
+![Mood Detection](./screenshots/mood-detection.png)
+
+### Cinematic Playlist
+![Cinematic Playlist](./screenshots/cinematic-playlist.png)
+
+### Mood Explorer
+![Mood Explorer](./screenshots/mood-explorer.png)
+
+### Favorites Section
+![Favorites](./screenshots/favorites.png)
+
+---
 
 ## ✨ Features
 
-- **Real-time Mood Detection:** Uses AI facial recognition directly in the browser to analyze your emotion and curate songs instantly.
-- **Cinematic UI/UX:** A stunning, premium dark-mode interface featuring glassmorphism, fluid animations, and ambient light blooms.
-- **Mood Explorer:** Manually discover music across specific emotional categories (Happy, Sad, Energetic, Calm, Romantic).
-- **Persistent Favorites:** Heart your favorite tracks and access them instantly in your private collection (persisted locally).
-- **Seamless Audio Player:** Custom-built global audio context with queue management, progress tracking, and volume controls.
-- **Dynamic Theming:** The interface subtly reacts and recolors based on the detected emotional state of the user.
+- **Real-time Facial Emotion Detection:** Utilizes advanced browser-based computer vision to analyze facial expressions and map them to musical moods instantly.
+- **AI Mood-Based Song Recommendations:** Automatically curates and transitions to the perfect soundtrack based on the user's emotional state.
+- **Cinematic Glassmorphism UI:** A highly polished, immersive dark-mode interface featuring dynamic light blooms and deep atmospheric gradients.
+- **Emotion-Adaptive Gradients:** The application theme and color palette subconsciously shift to reflect the detected emotional tone.
+- **Dynamic Playlists:** Instantly generated intelligent playlists grouped by mood semantics.
+- **Favorites System:** Persistent local storage allowing users to curate and access their own loved tracks effortlessly.
+- **Music Playback Controls:** Fully custom, responsive global audio context with seamless queue management and progress tracking.
+- **Framer Motion Animations:** Extremely subtle, smooth micro-interactions that make the interface feel alive and premium.
+- **Responsive Design:** Carefully crafted grid layouts ensure a consistent, flawless experience across desktop, tablet, and mobile browsers.
 
-## 🚀 Tech Stack
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- **React.js** (Context API for global state)
-- **Tailwind CSS** (for utility-first, fully responsive design)
-- **Framer Motion** (for smooth, complex micro-interactions and ambient hero animations)
-- **Face-api.js** (for client-side facial expression and emotion detection)
-- **Vite** (for blazing fast builds)
+- **React** (Component Architecture & Global State)
+- **Vite** (Next Generation Frontend Tooling)
+- **Tailwind CSS** (Utility-First Styling & Responsive Grids)
+- **Framer Motion** (Cinematic Animations & Transitions)
 
 ### Backend
-- **Node.js & Express.js** (Robust REST API)
-- **MongoDB** (NoSQL database for song metadata and mood tagging)
-- **Mongoose** (ODM for schema modeling)
-- **ImageKit** (Cloud storage and optimization for audio assets)
-- **Multer** (File upload handling)
+- **Node.js** (JavaScript Runtime Environment)
+- **Express.js** (RESTful API Framework)
 
-## 🛠️ Installation & Setup
+### Database
+- **MongoDB Atlas** (Cloud NoSQL Database)
 
-### Prerequisites
-- Node.js (v18+)
-- MongoDB Atlas (or local instance)
-- ImageKit account (for audio hosting)
+### AI / Media
+- **face-api.js** (Client-side Neural Network Emotion Tracking)
+- **ImageKit** (Cloud Audio Storage & Media Optimization)
 
-### 1. Clone the repository
+### Deployment
+- **Vercel** (Frontend Hosting & Edge Delivery)
+- **Render** (Backend Hosting & Compute)
+
+---
+
+## 🏗️ Architecture Overview
+
+The system operates on a seamless, event-driven loop between the user's physical state and the audio engine:
+
+```text
+User ──► Webcam ──► Emotion Detection (face-api.js) ──► Mood Matching ──► Playlist Rendering ──► Audio Playback
+```
+
+---
+
+## 🚀 Installation Guide
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/yourusername/musiq.git
 cd musiq
@@ -46,39 +94,51 @@ cd musiq
 ```bash
 cd backend
 npm install
+npm run dev
 ```
-Create a `.env` file in the `backend` directory with the following variables:
-```env
-PORT=3000
-MONGODB_URI=your_mongodb_connection_string
-IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
-IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
-IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
-```
-Start the backend server:
-```bash
-npm start
-```
+*(Runs on `http://localhost:3000`)*
 
 ### 3. Frontend Setup
+Open a new terminal window:
 ```bash
 cd frontend
 npm install
+npm run dev
 ```
-Create a `.env` file in the `frontend` directory:
+*(Runs on `http://localhost:5173`)*
+
+---
+
+## 🔐 Environment Variables
+
+For the application to function correctly, create the following `.env` files in their respective directories. 
+
+> [!NOTE]
+> Do not expose real credentials in your public repository.
+
+### Frontend (`frontend/.env`)
 ```env
 VITE_API_BASE_URL=http://localhost:3000
 ```
-Start the development server:
-```bash
-npm run dev
+
+### Backend (`backend/.env`)
+```env
+PORT=3000
+MONGO_URI=your_mongodb_atlas_connection_string
+FRONTEND_URL=http://localhost:5173
+IMAGEKIT_PUBLIC_KEY=your_public_key
+IMAGEKIT_PRIVATE_KEY=your_private_key
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_endpoint
 ```
 
-## 📸 Screenshots
-*(Coming Soon - Add high-resolution screenshots of the Dashboard, Mood Scanner, and Playlist views here)*
+---
 
 ## ☁️ Deployment
-*(Coming Soon - Add deployment instructions for Render/Vercel/Netlify here)*
+
+- **Frontend:** Automatically deployed and scaled globally via **Vercel**.
+- **Backend:** Hosted securely on **Render** utilizing web services.
+- **Database:** Managed via **MongoDB Atlas** for high-availability cloud storage.
 
 ---
-*Built with ❤️ for emotional music discovery.*
+
+**Designed & Developed by RCV**
